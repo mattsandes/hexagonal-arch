@@ -1,0 +1,16 @@
+sandes:
+  client:
+    address:
+      url: http://localhost:8082/addresses
+spring:
+  application:
+    name: exagonal
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hexagonal_db
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    
