@@ -6,7 +6,6 @@ import br.com.sandes.addapters.in.controller.response.CustomerResponse;
 import br.com.sandes.application.ports.in.FindCustomerByIdInputPort;
 import br.com.sandes.application.ports.in.InsertCustomerInputPort;
 import br.com.sandes.application.ports.in.UpdateCustomerInputPort;
-import br.com.sandes.application.ports.out.UpdateCustomerOutputPort;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/customers")
 public class CustomerController {
 
-    prvate final UpdateCustomerInputPort updateCustomerInputPort;
+    private final UpdateCustomerInputPort updateCustomerInputPort;
     private final FindCustomerByIdInputPort findCustomerByIdInputPort;
     private final CustomerMapper mapper;
     private final InsertCustomerInputPort insertCustomerInputPort;
