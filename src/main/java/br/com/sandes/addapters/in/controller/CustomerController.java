@@ -5,6 +5,8 @@ import br.com.sandes.addapters.in.controller.request.CustomerRequest;
 import br.com.sandes.addapters.in.controller.response.CustomerResponse;
 import br.com.sandes.application.ports.in.FindCustomerByIdInputPort;
 import br.com.sandes.application.ports.in.InsertCustomerInputPort;
+import br.com.sandes.application.ports.in.UpdateCustomerInputPort;
+import br.com.sandes.application.ports.out.UpdateCustomerOutputPort;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,14 +15,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/customers")
 public class CustomerController {
 
+    prvate final UpdateCustomerInputPort updateCustomerInputPort;
     private final FindCustomerByIdInputPort findCustomerByIdInputPort;
     private final CustomerMapper mapper;
     private final InsertCustomerInputPort insertCustomerInputPort;
 
     public CustomerController(
+            UpdateCustomerInputPort updateCustomerInputPort,
             FindCustomerByIdInputPort findCustomerByIdInputPort,
             CustomerMapper mapper,
             InsertCustomerInputPort insertCustomerInputPort) {
+        this.updateCustomerInputPort = updateCustomerInputPort;
         this.findCustomerByIdInputPort = findCustomerByIdInputPort;
         this.mapper = mapper;
         this.insertCustomerInputPort = insertCustomerInputPort;
@@ -42,5 +47,16 @@ public class CustomerController {
         var customerResponse = mapper.toCustomerResponse(customer);
 
         return ResponseEntity.ok().body(customerResponse);
+    }
+
+    @PutMapping("/${id}")
+    public ResponseEntity<Void> update(@PathVariable String id, @Valid @RequestBody CustomerRequest customerRequest) {
+        var customer = mapper.toCustomer(customerRequest);
+
+        customer.setId(id);
+
+        updateCustomerInputPort.update(customer, customerRequest.zipcode());
+
+        return ResponseEntity.noContent().build();
     }
 }
