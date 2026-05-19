@@ -3,6 +3,7 @@ package br.com.sandes.addapters.in.controller;
 import br.com.sandes.addapters.in.controller.mapper.CustomerMapper;
 import br.com.sandes.addapters.in.controller.request.CustomerRequest;
 import br.com.sandes.addapters.in.controller.response.CustomerResponse;
+import br.com.sandes.application.ports.in.DeleteCustomerByIdInputPort;
 import br.com.sandes.application.ports.in.FindCustomerByIdInputPort;
 import br.com.sandes.application.ports.in.InsertCustomerInputPort;
 import br.com.sandes.application.ports.in.UpdateCustomerInputPort;
@@ -14,16 +15,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/customers")
 public class CustomerController {
 
+    private final DeleteCustomerByIdInputPort deleteCustomerByIdInputPort;
     private final UpdateCustomerInputPort updateCustomerInputPort;
     private final FindCustomerByIdInputPort findCustomerByIdInputPort;
     private final CustomerMapper mapper;
     private final InsertCustomerInputPort insertCustomerInputPort;
 
     public CustomerController(
+            DeleteCustomerByIdInputPort deleteCustomerByIdInputPort,
             UpdateCustomerInputPort updateCustomerInputPort,
             FindCustomerByIdInputPort findCustomerByIdInputPort,
             CustomerMapper mapper,
             InsertCustomerInputPort insertCustomerInputPort) {
+        this.deleteCustomerByIdInputPort = deleteCustomerByIdInputPort;
         this.updateCustomerInputPort = updateCustomerInputPort;
         this.findCustomerByIdInputPort = findCustomerByIdInputPort;
         this.mapper = mapper;
@@ -55,6 +59,13 @@ public class CustomerController {
         customer.setId(id);
 
         updateCustomerInputPort.update(customer, customerRequest.zipcode());
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/${id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        deleteCustomerByIdInputPort.delete(id);
 
         return ResponseEntity.noContent().build();
     }
