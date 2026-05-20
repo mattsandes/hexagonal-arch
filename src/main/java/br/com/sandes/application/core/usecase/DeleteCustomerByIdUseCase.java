@@ -2,16 +2,17 @@ package br.com.sandes.application.core.usecase;
 
 import br.com.sandes.application.ports.in.DeleteCustomerByIdInputPort;
 import br.com.sandes.application.ports.in.FindCustomerByIdInputPort;
+import br.com.sandes.application.ports.out.DeleteCustomerByIdOutputPort;
 
 public class DeleteCustomerByIdUseCase implements DeleteCustomerByIdInputPort {
 
-    private final DeleteCustomerByIdUseCase deleteCustomerByIdUseCase;
+    private final DeleteCustomerByIdOutputPort deleteCustomerByIdOutputPort;
     private final FindCustomerByIdInputPort findCustomerByIdInputPort;
 
     public DeleteCustomerByIdUseCase(
-            DeleteCustomerByIdUseCase deleteCustomerByIdUseCase,
+            DeleteCustomerByIdOutputPort deleteCustomerByIdOutputPort,
             FindCustomerByIdInputPort findCustomerByIdInputPort) {
-        this.deleteCustomerByIdUseCase = deleteCustomerByIdUseCase;
+        this.deleteCustomerByIdOutputPort = deleteCustomerByIdOutputPort;
         this.findCustomerByIdInputPort = findCustomerByIdInputPort;
     }
 
@@ -19,6 +20,6 @@ public class DeleteCustomerByIdUseCase implements DeleteCustomerByIdInputPort {
     public void delete(String id) {
         var customer = findCustomerByIdInputPort.find(id);
 
-        deleteCustomerByIdUseCase.delete(customer.getId());
+        deleteCustomerByIdOutputPort.deleteById(customer.getId());
     }
 }
