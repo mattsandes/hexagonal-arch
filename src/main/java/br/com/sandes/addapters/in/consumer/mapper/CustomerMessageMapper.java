@@ -1,0 +1,13 @@
+package br.com.sandes.addapters.in.consumer.mapper;
+
+import br.com.sandes.addapters.in.consumer.message.CustomerMessage;
+import br.com.sandes.application.core.domain.Customer;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+@Mapper(componentModel = "spring")
+public interface CustomerMessageMapper {
+
+    @Mapping(target = "address", ignore = true)
+    Customer toCustomer(CustomerMessage message);
+}
